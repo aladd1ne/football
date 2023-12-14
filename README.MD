@@ -16,6 +16,10 @@ Symfony 6.4  backend application for APIs and Admin tasks.
 
    This will initialize local settings and install the site connection file.
 
+IMPORTANT: to get config keys run 
+```
+php bin/console secrets:list --reveal 
+```
 ```
     - composer install
     - php bin/console doctrine:database:create
