@@ -26,7 +26,7 @@ class TeamCrudController extends AbstractCrudController
         $name = TextField::new('name');
         $country = CountryField::new('country');
         $city = TextField::new('city');
-        $logo = ImageField::new('logo')->setUploadDir('public/uploads/logos')->setBasePath('uploads/logos')
+        $logo = ImageField::new('logo')->setUploadDir('public/uploads')->setBasePath('uploads')
             ->setFormTypeOption(
                 'constraints',
                 [
