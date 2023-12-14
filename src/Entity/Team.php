@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
@@ -24,6 +26,19 @@ class Team
 
     #[ORM\Column(length: 255)]
     private ?string $logo = null;
+
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Coach::class)]
+    private Collection $coaches;
+
+    public function __construct()
+    {
+        $this->coaches = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +89,36 @@ class Team
     public function setLogo(string $logo): static
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Coach>
+     */
+    public function getCoaches(): Collection
+    {
+        return $this->coaches;
+    }
+
+    public function addCoach(Coach $coach): static
+    {
+        if (!$this->coaches->contains($coach)) {
+            $this->coaches->add($coach);
+            $coach->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCoach(Coach $coach): static
+    {
+        if ($this->coaches->removeElement($coach)) {
+            // set the owning side to null (unless already changed)
+            if ($coach->getTeam() === $this) {
+                $coach->setTeam(null);
+            }
+        }
 
         return $this;
     }
