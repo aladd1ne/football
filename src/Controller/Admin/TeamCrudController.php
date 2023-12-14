@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Constraints\File;
 
 class TeamCrudController extends AbstractCrudController
 {
@@ -25,7 +26,20 @@ class TeamCrudController extends AbstractCrudController
         $name = TextField::new('name');
         $country = CountryField::new('country');
         $city = TextField::new('city');
-        $logo = ImageField::new('logo')->setUploadDir('public/uploads/logos')->setBasePath('uploads/logos');
+        $logo = ImageField::new('logo')->setUploadDir('public/uploads/logos')->setBasePath('uploads/logos')
+            ->setFormTypeOption(
+                'constraints',
+                [
+                    new File([
+                        'maxSize' => '10240k',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                            'image/jpg',
+                        ],
+                    ])
+                ]
+            );
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $name, $country, $city, $logo];
