@@ -22,6 +22,9 @@ class Team
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $logo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -56,10 +59,22 @@ class Team
         return $this->city;
     }
 
-    public function setCity(string $city): static
+    public function setCity(string $city): string
     {
         $this->city = $city;
 
         return $city;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
     }
 }
